@@ -1,4 +1,4 @@
-![FormFreedom — One click. Leave form. Keep going.](assets/banner.svg)
+![FormFreedom — Automatic Druid Form Cancellation for WotLK 3.3.5a](assets/banner.png)
 
 # FormFreedom
 
