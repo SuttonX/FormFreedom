@@ -58,10 +58,9 @@ Successfully tested **entirely standalone**, **alongside ElvUI 3.3.5**, and **al
 
 ## 📦 Installation
 
-1. Open this repository's **Releases** and download **FormFreedom-1.0.0.zip**.
-2. Extract **FormFreedom** into `World of Warcraft/Interface/AddOns/`.
-3. Check that `Interface/AddOns/FormFreedom/FormFreedom.toc` exists.
-4. Restart WoW and enable FormFreedom in the addon list.
+1. Download the [latest Release](https://github.com/SuttonX/FormFreedom/releases).
+2. Extract **FormFreedom** into `/Interface/AddOns/`.
+3. Restart WoW and enable FormFreedom in the addon list.
 
 No configuration or user-created macros required. Keep your existing SavedVariables; FormFreedom creates none.
 
