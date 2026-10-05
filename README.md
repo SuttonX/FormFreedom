@@ -16,12 +16,10 @@ Works with Blizzard's UI, ElvUI-WotLK, and our compatible ConsolePortLK build. N
 | --- | --- |
 | **Flight masters** | Click to speak to Flight master: leaves form, then you select the flight. |
 | **Crafting** | Click **Create** or **Create All**: leave form and run the normal profession-button action, preserving the selected recipe and quantity. |
-| **Mounts** | Use an identified mount on a supported action bar: leave a disallowed form before summoning. |
-| **Fishing** | Use the Fishing ability on a supported action bar: leave a disallowed form before casting. |
-| **Teleports** | Use an identified restricted teleport spell or item on a supported action bar: leave form when its spell rules require it. |
-| **Warstorm Book of Powers** | Item **9017**: mount option **2** and Dalaran option **9** leave form before selection. Opening the book and other options retain their normal behavior. |
-
-Mouse hover highlights and normal button interactions remain available. Crafting clicks deliberately leave form even when a particular recipe might permit casting in form.
+| **Mounts** | Leaves a disallowed form before summoning. |
+| **Fishing** | Use the Fishing ability: leave a disallowed form before casting. |
+| **Teleports** | Use an identified restricted teleport spell or item: leave form when its spell rules require it. |
+| **Warstorm Book of Powers** | Item **9017**: mount option **2** and Dalaran option **9** leave form upon selection. Opening the book and other options retain their normal behavior. |
 
 ## 🌿 How the logic works
 
@@ -50,9 +48,7 @@ For native menus, invisible secure helpers cover only the supported buttons. The
 - **WotLK 3.3.5a**, Interface **30300**; druids only. Compatibility with **3.3.5** is expected but has not been separately tested.
 - **Blizzard action bars**, including the bonus/form bar and four multibars.
 - **ElvUI 3.3.5** (ElvUI-WotLK **6.09**) action bars. ElvUI is optional; its files remain untouched.
-- **Our ConsolePortLK v160+ builds**, with the FormFreedom bridge. Keep FormFreedom enabled and toggle CPLK when switching between desktop and controller use.
-
-Older CPLK v154–v159 builds contain duplicate form helpers and should not be combined with this release. The CPLK bridge is a development-build integration, not a claim that every upstream ConsolePort release supports it.
+- **ConsolePortLK**. Both CPLK controller cursor and virtual mouse cursor retain intended addon functionality.
 
 Successfully tested **entirely standalone**, **alongside ElvUI 3.3.5**, and **alongside ConsolePortLK** on **Warstorm**, using the **WotLK 3.3.5a client**. Other private servers, bar replacements and controller combinations are not exhaustively tested. This release targets neither retail WoW nor modern Classic clients.
 
@@ -68,7 +64,6 @@ Use the attached **FormFreedom-1.0.0.zip** release package for direct installati
 
 ## ⚠️ Coverage limits
 
-- **Supported action bars are required** for the mount, Fishing and teleport integration. Generic bag, spellbook and mount-journal clicks are not covered.
 - Mining by right-clicking ore, arbitrary quest/gossip options, toys and bandages are not universally handled.
 - Book of Powers support uses Warstorm's specific item and option indices.
 - Private-server restrictions can differ from the bundled stock reference. Unknown custom actions may need dedicated support.
