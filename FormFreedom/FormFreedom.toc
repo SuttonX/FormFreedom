@@ -1,0 +1,13 @@
+## Interface: 30300
+## Title: FormFreedom
+## Notes: Leave druid form when using supported travel, crafting and action-bar abilities.
+## Author: Christopher Sutton
+## Version: 1.0.0
+## OptionalDeps: ElvUI, ConsolePortBar
+
+Core.lua
+FormRestrictions.lua
+AutoForm.lua
+ActionBars.lua
+Menus.lua
+Diagnostics.lua
