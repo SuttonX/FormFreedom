@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.0.1 — 2026-10-06
+
+- Fix secure frame-reference access for the WotLK wrapper execution environment.
+- Guard missing controller pages and detached parents; accept numeric-string pages.
+- Clear stale controller redirects when menu source frames are replaced.
+- Report the installed version dynamically in diagnostics.
+
+
 ## 1.0.0 — 2026-10-05
 
 Initial standalone release:

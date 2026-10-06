@@ -26,6 +26,7 @@ CreateFrame=function(_,name) local f=frame();if name then named[name]=f end;retu
 GetTime=function() return time end
 GetShapeshiftForm=function() return 1 end
 GetShapeshiftFormInfo=function() return nil,'Cat Form' end
+GetAddOnMetadata=function(_,key) assert(key=='Version');return '1.0.1' end
 GetBuildInfo=function() return '3.3.5a','12340' end
 GetRealmName=function() return 'Test Realm' end
 IsAddOnLoaded=function(name) return name=='ElvUI' end
@@ -48,3 +49,5 @@ assert(report.edit.highlight and report.edit.focus and #UISpecialFrames==1)
 SlashCmdList.FORMFREEDOMREPORT();hooks.CastSpellByID(3561);SlashCmdList.FORMFREEDOMREPORT();assert(report.edit.text:find('spell ID=3561'))
 SlashCmdList.FORMFREEDOMREPORT();time=time+31;ns.diagnosticMonitor.scripts.OnUpdate();assert(report.edit.text:find('No supported action hooks captured'))
 print('PASS: opt-in diagnostic capture, item/gossip/error IDs, spell IDs, copy-window selection, manual show and timeout')
+
+assert(report.edit.text:find("1.0.1",1,true))

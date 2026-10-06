@@ -80,7 +80,12 @@ local function Place(key, source, macro, craftClick)
     local left, bottom = source:GetLeft(), source:GetBottom()
     if not left or not bottom then HideOverlay(button); return end
     local ratio = source:GetEffectiveScale() / host:GetEffectiveScale()
-    if button.source ~= source then ReleaseMouseHover(button) end
+    if button.source ~= source then
+        ReleaseMouseHover(button)
+        if button.source and button.source.ffAutoFormClick == button then
+            button.source.ffAutoFormClick = nil
+        end
+    end
     button.source = source
     button.craftClick = craftClick
     source.ffAutoFormClick = button

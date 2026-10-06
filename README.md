@@ -4,7 +4,7 @@
 
 **Automatic druid form cancellation for the WotLK 3.3.5 / 3.3.5a client.**
 
-**1.0.0** · **Druid only** · **Standalone** · **ElvUI compatible**
+**1.0.1** · **Druid only** · **Standalone** · **ElvUI compatible**
 
 Trying to take a flight, craft an item or summon a mount while shapeshifted? FormFreedom leaves form through your original click and continues supported actions—without making you write macros or manually cancel form first.
 
@@ -60,7 +60,7 @@ Successfully tested **entirely standalone**, **alongside ElvUI 3.3.5**, and **al
 
 No configuration or user-created macros required. Keep your existing SavedVariables; FormFreedom creates none.
 
-Use the attached **FormFreedom-1.0.0.zip** release package for direct installation. It contains one `FormFreedom` folder, including the source and documentation. GitHub's automatically generated Source code archive may use a versioned outer folder; rename that extracted folder to `FormFreedom` before placing it in `Interface/AddOns/`.
+Use the attached [**FormFreedom.zip**](https://github.com/SuttonX/FormFreedom/releases/latest/download/FormFreedom.zip) release package for direct installation. It contains one `FormFreedom` folder, including the source and documentation. GitHub's automatically generated Source code archive may use a versioned outer folder; rename that extracted folder to `FormFreedom` before placing it in `Interface/AddOns/`.
 
 ## ⚠️ Coverage limits
 
@@ -120,3 +120,9 @@ The mock harness requires Python 3 and Lua 5.3+ or `luatex`; addon source target
 ## License and credits
 
 **Artistic License 2.0.** Upstream notices and modification provenance are preserved in [LICENSE.md](LICENSE.md) and [CREDITS.md](CREDITS.md). FormFreedom is independently named and is not an official ElvUI or ConsolePort release.
+
+## Reliability improvements in 1.0.1
+
+The previously tested secure-handler fix uses the header `owner` for frame methods on WotLK 3.3.5a, preserving `control:RunFor` for secure execution. Additional guards skip missing controller action pages, accept numeric-string pages, and handle detached stock buttons. Replacing a menu source clears its stale controller redirect. Diagnostic reports read the installed TOC version.
+
+All five mock suites pass. The secure-handler correction was confirmed in game, and the maintainer reported no FormFreedom issues after installing the expanded audit build and testing profile switching on 2026-10-06. This is not an exhaustive test of every supported action or controller combination. Close WoW and replace the FormFreedom folder; no configuration reset is required. The ready-to-install release asset keeps the name FormFreedom.zip across versions.

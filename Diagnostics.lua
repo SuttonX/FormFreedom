@@ -1,5 +1,5 @@
 -- Opt-in read-only diagnostics. Never retries, cancels form or changes bindings.
-local _, ns = ...
+local addonName, ns = ...
 if not ns.enabled then return end
 local capture, showAt, window
 local function Add(line)
@@ -26,7 +26,8 @@ local function FormName()
 end
 local function ShowReport()
     if not capture then return end
-    local text = 'FormFreedom report\nAddon: 1.0.0; target: WotLK 3.3.5a\nClient: '..tostring(GetBuildInfo())
+    local version = GetAddOnMetadata and GetAddOnMetadata(addonName,'Version') or '1.0.1'
+    local text = 'FormFreedom report\nAddon: '..tostring(version)..'; target: WotLK 3.3.5a\nClient: '..tostring(GetBuildInfo())
         ..'\nRealm: '..tostring(GetRealmName())..'\nStarted in: '..capture.form
         ..'\nEnded in: '..FormName()..'\nElvUI loaded: '..tostring(IsAddOnLoaded('ElvUI'))
         ..'\nConsolePortBar loaded: '..tostring(IsAddOnLoaded('ConsolePortBar'))..'\n\n'

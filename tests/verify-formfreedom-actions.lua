@@ -41,11 +41,9 @@ assert(loadfile('ActionBars.lua'))('FormFreedom',ns)
 ns.actionBarMonitor.scripts.OnUpdate(ns.actionBarMonitor,1)
 local activeControlHost=host
 local control={}
-function control:GetAttribute(k) return host:GetAttribute(k) end
-function control:GetFrameRef(k) return activeControlHost:GetFrameRef(k) end
 function control:RunFor(button,code,state) assert(code=='update');button.attrs.type='action';button.attrs.action=(state-1)*12+1 end
 local function run(button,script,mouse,down)
- local env=setmetatable({self=button,control=control,button=mouse or 'LeftButton',down=down}, {__index=_G})
+ local env=setmetatable({self=button,control=control,owner=activeControlHost,button=mouse or 'LeftButton',down=down}, {__index=_G})
  assert(load(wraps[button][script],'snippet','t',env))()
 end
 run(ActionButton1,'PreClick');assert(ActionButton1.attrs.type=='macro' and proxy.attrs.action==1)
@@ -71,3 +69,14 @@ run(cp,'PreClick','ControllerInput',true);assert(cp.attrs.type=='macro' and prox
 run(cp,'PostClick','ControllerInput',true);assert(cp.attrs.type=='action')
 run(cp,'PreClick','ControllerInput',false);assert(cp.attrs.type=='action' and not cp.attrs.FFActive)
 print('PASS: CPLK header bridge, page-relative controller press snapshot, release excluded')
+cp.attrs.actionpage=nil
+run(cp,'PreClick','ControllerInput',true)
+assert(cp.attrs.type=='action' and not cp.attrs.FFActive,'An uninitialized controller page must safely skip cancellation')
+cp.attrs.actionpage='2'
+run(cp,'PreClick','ControllerInput',true);assert(cp.attrs.type=='macro' and proxy.attrs.action==13)
+run(cp,'PostClick','ControllerInput',true)
+ActionButton1.parent=nil;ActionButton1.attrs.actionpage=nil
+activeControlHost=host
+run(ActionButton1,'PreClick')
+assert(ActionButton1.attrs.type=='action','A detached stock button may use the native page fallback without crashing')
+print('PASS: missing/string controller pages and detached stock-button parents')

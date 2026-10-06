@@ -71,3 +71,9 @@ npc=false;TaxiFrame.shown=true;tick();assert(not TaxiButton1.ffAutoFormClick);as
 combat=true;tick();combat=false
 form=0;tick();assert(not TaxiButton2.ffAutoFormClick)
 print('PASS: native book context/options, unrelated gossip, enabled crafting and original callback, reachable taxi only, combat deferral, unshift cleanup')
+form=1;TradeSkillCreateButton.enabled=true;tick()
+local previous=TradeSkillCreateButton
+TradeSkillCreateButton=frame();tick()
+assert(previous.ffAutoFormClick==nil,'Reusing an overlay must clear the old source redirect')
+assert(TradeSkillCreateButton.ffAutoFormClick.source==TradeSkillCreateButton)
+print('PASS: replaced menu source clears stale controller redirect')

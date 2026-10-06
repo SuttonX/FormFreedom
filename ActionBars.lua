@@ -4,21 +4,26 @@ if not ns.enabled then return end
 local host = ns.bar
 local installed = setmetatable({}, {__mode = 'k'})
 local before = [[
-    local manager = control:GetFrameRef('FFHost') or control
+    -- owner is the header frame; control only exposes execution methods in 3.3.5.
+    local manager = owner:GetFrameRef('FFHost') or owner
     if (button ~= 'LeftButton' and button ~= 'ControllerInput') or manager:GetAttribute('FFAutoFormCursorBusy') then return end
     if self:GetAttribute('FFCPButton') and not down then return end
     if self:GetAttribute('type') ~= 'action' then return end
     local slot = self:GetAttribute('action')
     if self:GetAttribute('FFStockButton') then
-        local page = self:GetAttribute('actionpage') or self:GetParent():GetAttribute('actionpage') or GetActionBarPage()
+        local parent = self:GetParent()
+        local page = tonumber(self:GetAttribute('actionpage') or (parent and parent:GetAttribute('actionpage')) or GetActionBarPage())
+        if not page then return end
         if self:GetAttribute('FFStockBonus') and GetBonusBarOffset() > 0 then page = 6 + GetBonusBarOffset() end
         slot = self:GetID() + (page - 1) * 12
     end
     if self:GetAttribute('FFCPButton') and self:GetID() > 0 then
-        slot = self:GetID() + ((self:GetAttribute('actionpage') - 1) * 12)
+        local page = tonumber(self:GetAttribute('actionpage'))
+        if not page then return end
+        slot = self:GetID() + ((page - 1) * 12)
     end
     local form = GetShapeshiftForm()
-    if not slot or form == 0 or not manager:GetAttribute('FFAutoForm-'..slot..'-'..form) then return end
+    if type(slot) ~= 'number' or slot < 1 or form == 0 or not manager:GetAttribute('FFAutoForm-'..slot..'-'..form) then return end
     local kind, id, subtype = GetActionInfo(slot)
     if kind ~= manager:GetAttribute('FFAutoFormKind-'..slot)
     or id ~= manager:GetAttribute('FFAutoFormID-'..slot)
@@ -27,7 +32,8 @@ local before = [[
     if not proxy then return end
     proxy:SetAttribute('action', slot)
     local unit = self:GetAttribute('unit')
-    if not unit and self:GetAttribute('useparent-unit') then unit = self:GetParent():GetAttribute('unit') end
+    local parent = self:GetParent()
+    if not unit and parent and self:GetAttribute('useparent-unit') then unit = parent:GetAttribute('unit') end
     proxy:SetAttribute('unit', unit)
     proxy:SetAttribute('checkselfcast', self:GetAttribute('checkselfcast'))
     proxy:SetAttribute('checkfocuscast', self:GetAttribute('checkfocuscast'))

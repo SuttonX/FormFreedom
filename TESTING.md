@@ -1,5 +1,12 @@
 # Validation and coverage
 
+## 1.0.1 reliability fixes
+
+The owner-based secure-handler correction was confirmed in game by the tester. Additional page/parent/menu-source guards pass all five mock suites. On 2026-10-06 the maintainer reported no FormFreedom issues after installing this expanded audit build alongside the other updated addons and testing profile switching. This overall pass does not establish exhaustive per-action coverage. Secure-handler mocks distinguish the execution-only control handle from the owner frame.
+
+With a druid, test stock/ElvUI action bars and ConsolePort bars, bonus pages and shapeshift transitions, supported travel/crafting/menu actions, combat deferral and right-click behavior. Confirm ordinary actions retain their original behavior. Run /ffreport if a supported shifted action fails; its version should match the TOC.
+
+
 ## Runtime evidence
 
 On 2026-10-05, the tester reported that FormFreedom 0.1.0-test1 worked both entirely by itself and alongside ElvUI. Testing took place on Warstorm with a WoW3.3.5a client. The report was an overall pass, not an exhaustive per-form, per-recipe, per-item or per-keybinding matrix.
