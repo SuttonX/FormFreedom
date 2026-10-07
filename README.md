@@ -4,13 +4,13 @@
 
 **Automatic druid form cancellation for the WotLK 3.3.5 / 3.3.5a client.**
 
-**1.0.1** · **Druid only** · **Standalone** · **ElvUI compatible**
+**Druid only** · **Standalone** · **ElvUI compatible**
 
 Trying to take a flight, craft an item or summon a mount while shapeshifted? FormFreedom leaves form through your original click and continues supported actions—without making you write macros or manually cancel form first.
 
-Works with Blizzard's UI, ElvUI-WotLK, and our compatible ConsolePortLK build. No ElvUI file edits, settings panel or extra controls.
+Works with Blizzard's UI, ElvUI-WotLK, and [ConsolePortLK Enhanced](https://github.com/SuttonX/ConsolePortLK-Enhanced). No ElvUI file edits, settings panel or extra controls.
 
-## ✨ What it does
+## What it does
 
 | Action | How FormFreedom helps |
 | --- | --- |
@@ -21,7 +21,7 @@ Works with Blizzard's UI, ElvUI-WotLK, and our compatible ConsolePortLK build. N
 | **Teleports** | Use an identified restricted teleport spell or item: leave form when its spell rules require it. |
 | **Warstorm Book of Powers** | Item **9017**: mount option **2** and Dalaran option **9** leave form upon selection. Opening the book and other options retain their normal behavior. |
 
-## 🌿 How the logic works
+## How it works
 
 ### Blizzard's `autoUnshift` and FormFreedom
 
@@ -35,7 +35,7 @@ For action bars, FormFreedom uses a bundled reference of **WoW 3.3.5 spell/form 
 
 Form-changing abilities are excluded. It also avoids cancellation when leaving form cannot help an ability that requires a different form. Item spells are resolved by ID or an unambiguous localized name/rank; unknown custom spells and ambiguous matches are left unchanged.
 
-Before redirecting a click, it checks that the bar slot still contains the classified action. It snapshots the original absolute slot so leaving form cannot accidentally select an ability from a different form page, then restores the button's ordinary state.
+Before redirecting a click, it checks that the bar slot still contains the classified action. It snapshots the original absolute slot so leaving form cannot accidentally select an ability from a different form page, then restores the button's ordinary state.  Missing action pages and detached buttons are skipped, and menu helpers discard stale controller redirects when their source menu is replaced.
 
 ### One hardware click
 
@@ -43,26 +43,33 @@ WoW protects form cancellation. FormFreedom runs it through a secure button duri
 
 For native menus, invisible secure helpers cover only the supported buttons. They preserve the original menu's appearance and hover behavior, cancel form, then continue the selected action. No macros need to be placed on your bars.
 
-## 🧩 Compatibility
+## Compatibility
 
 - **WotLK 3.3.5a**, Interface **30300**; druids only. Compatibility with **3.3.5** is expected but has not been separately tested.
 - **Blizzard action bars**, including the bonus/form bar and four multibars.
-- **ElvUI 3.3.5** (ElvUI-WotLK **6.09**) action bars. ElvUI is optional; its files remain untouched.
+- **ElvUI-WotLK** action bars. ElvUI is optional; its files remain untouched.
 - **ConsolePortLK**. Both CPLK controller cursor and virtual mouse cursor retain intended addon functionality.
 
-Successfully tested **entirely standalone**, **alongside ElvUI 3.3.5**, and **alongside ConsolePortLK** on **Warstorm**, using the **WotLK 3.3.5a client**. Other private servers, bar replacements and controller combinations are not exhaustively tested. This release targets neither retail WoW nor modern Classic clients.
+Successfully tested **entirely standalone**, **alongside ElvUI 3.3.5**, and **alongside ConsolePortLK** on **Warstorm**, using the **WotLK 3.3.5a client**. Other private servers, bar replacements and controller combinations are not exhaustively tested. FormFreedom targets the original WotLK client, rather than retail WoW or modern Classic clients.  See [TESTING.md](TESTING.md) for validation history and remaining limits.
 
-## 📦 Installation
+## Installation
 
-1. Download the [latest Release](https://github.com/SuttonX/FormFreedom/releases).
-2. Extract **FormFreedom** into `/Interface/AddOns/`.
-3. Restart WoW and enable FormFreedom in the addon list.
+[Download FormFreedom.zip](https://github.com/SuttonX/FormFreedom/releases/latest/download/FormFreedom.zip)
 
-No configuration or user-created macros required. Keep your existing SavedVariables; FormFreedom creates none.
+1. Fully close WoW.
+2. Extract **FormFreedom.zip**.
+3. Place the **FormFreedom** folder in `Interface/AddOns`.
+4. Start WoW and enable FormFreedom in the addon list.
 
-Use the attached [**FormFreedom.zip**](https://github.com/SuttonX/FormFreedom/releases/latest/download/FormFreedom.zip) release package for direct installation. It contains one `FormFreedom` folder, including the source and documentation. GitHub's automatically generated Source code archive may use a versioned outer folder; rename that extracted folder to `FormFreedom` before placing it in `Interface/AddOns/`.
+The ready-to-install ZIP contains one `FormFreedom` folder, including the source and documentation.  Use this attached release asset for installation; GitHub's automatic Source code archive contains a repository parent folder.
 
-## ⚠️ Coverage limits
+### Updating an existing installation
+
+Fully close WoW, download the latest install ZIP, and replace the **FormFreedom** folder.  No configuration or user-created macros are required.  Keep your existing SavedVariables; FormFreedom creates none.  Any release-specific instructions belong in the [release notes](https://github.com/SuttonX/FormFreedom/releases/latest).
+
+**Installation and updates: CLIENT RESTART; no SavedVariables reset.**
+
+## Coverage limits
 
 - Mining by right-clicking ore, arbitrary quest/gossip options, toys and bandages are not universally handled.
 - Book of Powers support uses Warstorm's specific item and option indices.
@@ -72,7 +79,7 @@ Use the attached [**FormFreedom.zip**](https://github.com/SuttonX/FormFreedom/re
 
 FormFreedom handles supported click paths; it does not promise to intercept every “You are in shapeshift form” error in the game.
 
-## 🔎 Found another blocked action?
+## Found another blocked action?
 
 If an action still displays **“You are in shapeshift form”** and your druid does not leave form, please open an issue so we can investigate adding support. Tell us what you clicked, your form and server, and include the **item number or spell ID** if possible.
 
@@ -104,7 +111,7 @@ The report can record standard action-bar, inventory, spell, crafting, gossip an
 
 The capture is opt-in, local and limited to 30 seconds. It does not send reports, change bindings, cancel form or retry anything. This macro is only for reporting; ordinary addon use requires no macros.
 
-## 🛠️ Feedback and development
+## Feedback and development
 
 Open an issue with your client/server, addon version, form, exact action and click path. Include Lua errors and item/spell IDs when available.
 
@@ -120,9 +127,3 @@ The mock harness requires Python 3 and Lua 5.3+ or `luatex`; addon source target
 ## License and credits
 
 **Artistic License 2.0.** Upstream notices and modification provenance are preserved in [LICENSE.md](LICENSE.md) and [CREDITS.md](CREDITS.md). FormFreedom is independently named and is not an official ElvUI or ConsolePort release.
-
-## Reliability improvements in 1.0.1
-
-The previously tested secure-handler fix uses the header `owner` for frame methods on WotLK 3.3.5a, preserving `control:RunFor` for secure execution. Additional guards skip missing controller action pages, accept numeric-string pages, and handle detached stock buttons. Replacing a menu source clears its stale controller redirect. Diagnostic reports read the installed TOC version.
-
-All five mock suites pass. The secure-handler correction was confirmed in game, and the maintainer reported no FormFreedom issues after installing the expanded audit build and testing profile switching on 2026-10-06. This is not an exhaustive test of every supported action or controller combination. Close WoW and replace the FormFreedom folder; no configuration reset is required. The ready-to-install release asset keeps the name FormFreedom.zip across versions.
