@@ -52,6 +52,13 @@ For native menus, invisible secure helpers cover only the supported buttons. The
 
 Successfully tested **entirely standalone**, **alongside ElvUI 3.3.5**, and **alongside ConsolePortLK** on **Warstorm**, using the **WotLK 3.3.5a client**. Other private servers, bar replacements and controller combinations are not exhaustively tested. FormFreedom targets the original WotLK client, rather than retail WoW or modern Classic clients.  See [TESTING.md](TESTING.md) for validation history and remaining limits.
 
+## Related addons
+
+- [ConsolePortLK-Enhanced](https://github.com/SuttonX/ConsolePortLK-Enhanced): controller support for WotLK 3.3.5a, with improved action-bar layouts, cooldown displays, and saved layout preferences.  FormFreedom integrates with its controller cursor for supported menu actions and helps reconcile the displayed modifier bar afterward.
+- [SetupSwap](https://github.com/SuttonX/SetupSwap): save account-wide desktop and controller setups, each with their own addon selections, captured settings and window positions, chat layouts, and native WoW keybindings.  Switch through a UI reload without logging out.  Keep FormFreedom enabled in both profiles to retain its supported form handling when toggling ConsolePortLK-Enhanced.
+
+Both addons are separate, optional downloads.  [Download the latest ConsolePortLK-Enhanced.zip](https://github.com/SuttonX/ConsolePortLK-Enhanced/releases/latest/download/ConsolePortLK-Enhanced.zip) or [SetupSwap.zip](https://github.com/SuttonX/SetupSwap/releases/latest/download/SetupSwap.zip), and follow each project's installation instructions.
+
 ## Installation
 
 [Download FormFreedom.zip](https://github.com/SuttonX/FormFreedom/releases/latest/download/FormFreedom.zip)
