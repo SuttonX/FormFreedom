@@ -22,7 +22,12 @@ local function frame()
  return f
 end
 UIParent=frame();ChatFontNormal={};UISpecialFrames={};tinsert=table.insert
-CreateFrame=function(_,name) local f=frame();if name then named[name]=f end;return f end
+CreateFrame=function(_,name,parent,template)
+ if template=='UIPanelScrollFrameTemplate' then
+  assert(type(name)=='string' and name~='', 'WotLK scroll template requires a frame name')
+ end
+ local f=frame();if name then named[name]=f end;return f
+end
 GetTime=function() return time end
 GetShapeshiftForm=function() return 1 end
 GetShapeshiftFormInfo=function() return nil,'Cat Form' end
@@ -46,6 +51,7 @@ time=time+.4;ns.diagnosticMonitor.scripts.OnUpdate()
 local report=named.FormFreedomReportFrame
 assert(report and report.edit.text:find('item ID=9017') and report.edit.text:find('Gossip option 9') and report.edit.text:find('You are in shapeshift form'))
 assert(report.edit.highlight and report.edit.focus and #UISpecialFrames==1)
+assert(named.FormFreedomReportScrollFrame and named.FormFreedomReportScrollFrame.child==report.edit)
 SlashCmdList.FORMFREEDOMREPORT();hooks.CastSpellByID(3561);SlashCmdList.FORMFREEDOMREPORT();assert(report.edit.text:find('spell ID=3561'))
 SlashCmdList.FORMFREEDOMREPORT();time=time+31;ns.diagnosticMonitor.scripts.OnUpdate();assert(report.edit.text:find('No supported action hooks captured'))
 print('PASS: opt-in diagnostic capture, item/gossip/error IDs, spell IDs, copy-window selection, manual show and timeout')

@@ -2,7 +2,7 @@
 ## Title: FormFreedom
 ## Notes: Leave druid form when using supported travel, crafting and action-bar abilities.
 ## Author: Christopher Sutton
-## Version: 1.0.2
+## Version: 1.0.3
 ## OptionalDeps: ElvUI, ConsolePortBar
 
 Core.lua

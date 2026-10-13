@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.3 — 2026-10-13
+
+- Give the diagnostic scroll frame a stable name required by the WotLK UIPanelScrollFrameTemplate, fixing the Lua error when opening /ffreport.
+- Add a regression check requiring named scroll frames and confirming the report edit box is attached.
+
 ## 1.0.2 — 2026-10-13
 
 - Fix spell-action classification to use the WotLK global spell ID instead of the spellbook index. This prevents Prowl and other form-compatible abilities from being confused with unrelated restricted spells.

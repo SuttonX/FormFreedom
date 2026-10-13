@@ -1,5 +1,9 @@
 # Validation and coverage
 
+## 1.0.3 report window
+
+On 2026-10-13 the maintainer confirmed the diagnostic report-window fix working in game using 1.0.3-test1 after being asked to check error-free opening, scrolling and copying. Release 1.0.3 retains that tested window change and the 1.0.2 Prowl fix. All five mock suites pass, with the diagnostic mock rejecting unnamed UIPanelScrollFrameTemplate frames.
+
 ## 1.0.2 spell-action classification
 
 On 2026-10-13 the maintainer confirmed Prowl working in Cat Form through both ElvUI and ConsolePortLK-Enhanced using 1.0.2-test2. The original ElvUI report identified absolute action slot 73, spellbook index 89, global spell ID 5215, and Cat Form index 3 changing to Humanoid with “Must be in Cat Form.” The corrected ConsolePort report identified slot 84 with the same index/global ID and remained in Cat Form. The reason ConsolePort avoided the original failure was not established.
