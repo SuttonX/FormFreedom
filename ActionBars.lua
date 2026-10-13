@@ -24,10 +24,11 @@ local before = [[
     end
     local form = GetShapeshiftForm()
     if type(slot) ~= 'number' or slot < 1 or form == 0 or not manager:GetAttribute('FFAutoForm-'..slot..'-'..form) then return end
-    local kind, id, subtype = GetActionInfo(slot)
+    local kind, id, subtype, spellID = GetActionInfo(slot)
     if kind ~= manager:GetAttribute('FFAutoFormKind-'..slot)
     or id ~= manager:GetAttribute('FFAutoFormID-'..slot)
-    or subtype ~= manager:GetAttribute('FFAutoFormSubtype-'..slot) then return end
+    or subtype ~= manager:GetAttribute('FFAutoFormSubtype-'..slot)
+    or spellID ~= manager:GetAttribute('FFAutoFormSpellID-'..slot) then return end
     local proxy = manager:GetFrameRef('FFAutoFormProxy')
     if not proxy then return end
     proxy:SetAttribute('action', slot)

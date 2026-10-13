@@ -74,7 +74,7 @@ Hook('UseItemByName', function(item) RecordItem(item, 'UseItemByName') end)
 Hook('UseAction', function(slot)
     if not capture then return end
     local kind, id, subtype, spellID = GetActionInfo(slot)
-    Add('Action slot '..slot..': type='..tostring(kind)..'; ID='..tostring(id)..'; subtype='..tostring(subtype)..'; spell ID='..tostring(spellID or (kind == 'spell' and id) or 'unknown'))
+    Add('Action slot '..slot..': type='..tostring(kind)..'; ID='..tostring(id)..'; subtype='..tostring(subtype)..'; spell ID='..tostring(spellID or 'unknown'))
     if kind == 'item' then RecordItem(id, 'Bar item') end
     if kind == 'companion' and subtype == 'MOUNT' then
         local _, name, mountSpell = GetCompanionInfo('MOUNT', id)

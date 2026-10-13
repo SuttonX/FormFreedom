@@ -23,7 +23,7 @@ GetCursorInfo=function() end
 GetNumShapeshiftForms=function() return 1 end
 GetShapeshiftFormInfo=function() return nil,'Cat Form' end
 GetSpellInfo=function(id) if id==768 then return 'Cat Form','' elseif id==8690 then return 'Hearthstone','' elseif id==3561 then return 'Teleport','' end end
-local actions={[1]={'item',6948},[2]={'spell',3561},[3]={'companion',1,'MOUNT'},[4]={'spell',768},[5]={'item',99999},[6]={'item',9017}}
+local actions={[1]={'item',6948},[2]={'spell',10,'spell',3561},[3]={'companion',1,'MOUNT'},[4]={'spell',17,'spell',768},[5]={'item',99999},[6]={'item',9017}}
 GetActionInfo=function(slot) if actions[slot] then return unpack(actions[slot]) end end
 GetItemInfo=function(id) return 'Item' end
 GetItemSpell=function(id) if id==6948 then return 'Hearthstone','' elseif id==99999 then return 'Teleport','' end end
@@ -66,3 +66,30 @@ local monitor=frames[2];monitor.scripts.OnUpdate(monitor,1)
 assert(bar:GetAttribute('FFAutoForm-1-1'));assert(bar:GetAttribute('FFAutoForm-2-1'));assert(bar:GetAttribute('FFAutoForm-3-1'));assert(not bar:GetAttribute('FFAutoForm-4-1'));assert(bar:GetAttribute('FFAutoForm-5-1'))
 assert(not bar:GetAttribute('FFAutoForm-6-1'))
 print('PASS: standalone restriction data, localized monitor classification and action fingerprints')
+
+-- A restricted spell's numeric ID can collide with a spellbook index.
+-- Prowl/Growl must retain their native form behavior despite that collision.
+actions[7]={'spell',10,'spell',5215}
+actions[8]={'spell',10,'spell',6795}
+actions[9]={'spell',10,'spell',999999}
+actions[10]={'spell',10,'spell'}
+monitor.scripts.OnEvent(monitor,'SPELLS_CHANGED')
+monitor.scripts.OnUpdate(monitor,1)
+for slot=7,10 do
+ assert(not bar:GetAttribute('FFAutoForm-'..slot..'-1'), 'Spellbook index must not be classified as a spell ID')
+end
+assert(bar:GetAttribute('FFAutoForm-2-1'), 'Restricted teleport still needs form cancellation')
+assert(bar:GetAttribute('FFAutoFormID-2')==10)
+assert(bar:GetAttribute('FFAutoFormSpellID-2')==3561)
+-- Missing global IDs must safely remain native, without probing spell slots.
+GetSpellLink=function() error('GetSpellLink(): Invalid spell slot') end
+monitor.scripts.OnEvent(monitor,'SPELLS_CHANGED');monitor.scripts.OnUpdate(monitor,1)
+assert(not bar:GetAttribute('FFAutoForm-10-1'))
+-- Exact user report: Cat index 3, ElvUI absolute slot 73, index 89, Prowl ID 5215.
+GetNumShapeshiftForms=function() return 3 end
+GetShapeshiftFormInfo=function(index) if index==3 then return nil,'Cat Form' end end
+actions[73]={'spell',89,'spell',5215}
+monitor.scripts.OnEvent(monitor,'SPELLS_CHANGED');monitor.scripts.OnUpdate(monitor,1)
+assert(not bar:GetAttribute('FFAutoForm-73-3'), 'Prowl must never cancel Cat Form')
+assert(ab.formRestrictions[89] and ab:FormActionRequiresExit(ab.formRestrictions[89],1), 'Reported index collides with restricted manifest entry')
+print('PASS: exact reported Prowl index 89/global ID 5215, missing-ID safety, no spellbook lookup')

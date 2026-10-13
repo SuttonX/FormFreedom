@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.0.2 — 2026-10-13
+
+- Fix spell-action classification to use the WotLK global spell ID instead of the spellbook index. This prevents Prowl and other form-compatible abilities from being confused with unrelated restricted spells.
+- Include the returned global spell ID in action fingerprints to reject stale classifications after spellbook changes.
+- Leave spell actions with unavailable global IDs unchanged; do not probe invalid spellbook slots.
+- Correct diagnostic reports to avoid presenting a spellbook index as a spell ID.
+- Add regression coverage for the reported Prowl case and spellbook-index collisions.
+
 ## 1.0.1 — 2026-10-06
 
 - Fix secure frame-reference access for the WotLK wrapper execution environment.

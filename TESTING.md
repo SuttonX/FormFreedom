@@ -1,5 +1,11 @@
 # Validation and coverage
 
+## 1.0.2 spell-action classification
+
+On 2026-10-13 the maintainer confirmed Prowl working in Cat Form through both ElvUI and ConsolePortLK-Enhanced using 1.0.2-test2. The original ElvUI report identified absolute action slot 73, spellbook index 89, global spell ID 5215, and Cat Form index 3 changing to Humanoid with “Must be in Cat Form.” The corrected ConsolePort report identified slot 84 with the same index/global ID and remained in Cat Form. The reason ConsolePort avoided the original failure was not established.
+
+Release 1.0.2 retains the test2 gameplay code. All five mock suites pass, including the exact reported index/ID collision, Growl and unknown-spell preservation, missing-ID safety without spellbook lookups, and stale global-ID rejection. Growl preservation in the mocks is not a new in-game Bear Form test; a fresh mount/Fishing or exhaustive per-action regression pass was not separately reported for this fix. The first test build introduced an invalid spellbook lookup and was withdrawn; that lookup is absent from test2 and the release.
+
 ## 1.0.1 reliability fixes
 
 The owner-based secure-handler correction was confirmed in game by the tester. Additional page/parent/menu-source guards pass all five mock suites. On 2026-10-06 the maintainer reported no FormFreedom issues after installing this expanded audit build alongside the other updated addons and testing profile switching. This overall pass does not establish exhaustive per-action coverage. Secure-handler mocks distinguish the execution-only control handle from the owner frame.

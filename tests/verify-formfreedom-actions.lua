@@ -80,3 +80,12 @@ activeControlHost=host
 run(ActionButton1,'PreClick')
 assert(ActionButton1.attrs.type=='action','A detached stock button may use the native page fallback without crashing')
 print('PASS: missing/string controller pages and detached stock-button parents')
+
+-- The same spellbook index can refer to a new spell after spellbook changes.
+actions[1]={'spell',10,'spell',3561};flags(1)
+host.attrs['FFAutoFormSubtype-1']='spell'
+host.attrs['FFAutoFormSpellID-1']=3561
+run(ActionButton1,'PreClick');assert(ActionButton1.attrs.type=='macro');run(ActionButton1,'PostClick')
+actions[1]={'spell',10,'spell',5215}
+run(ActionButton1,'PreClick');assert(ActionButton1.attrs.type=='action' and not ActionButton1.attrs.FFActive)
+print('PASS: stale global spell ID rejected even when spellbook index is unchanged')

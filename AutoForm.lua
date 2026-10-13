@@ -82,10 +82,14 @@ local function Refresh()
     end
     local missingItems = false
     for slot = 1, 180 do
-        local kind, id, subtype = GetActionInfo(slot)
+        local kind, id, subtype, actionSpellID = GetActionInfo(slot)
         local spellID, itemRecord
         if kind == 'spell' then
-            spellID = id
+            -- WotLK returns the spellbook index second and global spell ID fourth.
+            -- Never classify the index as an unrelated spell from the manifest.
+            if type(actionSpellID) == 'number' and actionSpellID > 0 then
+                spellID = actionSpellID
+            end
         elseif kind == 'item' and id ~= 9017 then
             if not GetItemInfo(id) then missingItems = true end
             local name, rankOrID, itemSpellID = GetItemSpell(id)
@@ -118,6 +122,7 @@ local function Refresh()
                 Put('FFAutoFormKind-'..slot, kind)
                 Put('FFAutoFormID-'..slot, id)
                 Put('FFAutoFormSubtype-'..slot, subtype)
+                Put('FFAutoFormSpellID-'..slot, actionSpellID)
             end
         end
     end

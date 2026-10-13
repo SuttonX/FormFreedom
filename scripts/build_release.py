@@ -8,7 +8,7 @@ version=re.search(r'^## Version: (.+)$',toc,re.M).group(1)
 for line in toc.splitlines():
     if line.strip().endswith('.lua'): assert (root/line.strip()).is_file(),line
 output=root/'dist';output.mkdir(exist_ok=True)
-archive=output/('FormFreedom-'+version+'.zip')
+archive=output/'FormFreedom.zip'
 with zipfile.ZipFile(archive,'w',zipfile.ZIP_DEFLATED) as z:
     for path in sorted(root.rglob('*')):
         relative=path.relative_to(root)
