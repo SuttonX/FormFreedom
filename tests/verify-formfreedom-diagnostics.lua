@@ -29,6 +29,10 @@ CreateFrame=function(_,name,parent,template)
  local f=frame();if name then named[name]=f end;return f
 end
 GetTime=function() return time end
+local mounted=true
+IsMounted=function() return mounted end
+IsFlying=function() return false end
+UnitOnTaxi=function() return false end
 GetShapeshiftForm=function() return 1 end
 GetShapeshiftFormInfo=function() return nil,'Cat Form' end
 GetAddOnMetadata=function(_,key) assert(key=='Version');return '1.0.1' end
@@ -46,10 +50,12 @@ GetSpellLink=function() return '|Hspell:3561|h[Teleport]|h' end
 local ns={enabled=true};assert(loadfile('Diagnostics.lua'))('FormFreedom',ns)
 hooks.UseAction(1);assert(not named.FormFreedomReportFrame)
 SlashCmdList.FORMFREEDOMREPORT();hooks.UseContainerItem(0,1);hooks.SelectGossipOption(9)
+mounted=false
 ns.diagnosticMonitor.scripts.OnEvent(nil,'UI_ERROR_MESSAGE','You are in shapeshift form')
 time=time+.4;ns.diagnosticMonitor.scripts.OnUpdate()
 local report=named.FormFreedomReportFrame
 assert(report and report.edit.text:find('item ID=9017') and report.edit.text:find('Gossip option 9') and report.edit.text:find('You are in shapeshift form'))
+assert(report.edit.text:find('Started mounted: true; ended mounted: false',1,true))
 assert(report.edit.highlight and report.edit.focus and #UISpecialFrames==1)
 assert(named.FormFreedomReportScrollFrame and named.FormFreedomReportScrollFrame.child==report.edit)
 SlashCmdList.FORMFREEDOMREPORT();hooks.CastSpellByID(3561);SlashCmdList.FORMFREEDOMREPORT();assert(report.edit.text:find('spell ID=3561'))

@@ -1,7 +1,8 @@
 -- FormFreedom: independently named standalone adaptation; see README.md and LICENSE.md.
 local _, ns = ...
 local _, class = UnitClass('player')
-ns.enabled = class == 'DRUID'
+ns.enabled = true -- Mounted-action helpers apply to every class.
+ns.formEnabled = class == 'DRUID' or class == 'SHAMAN'
 if not ns.enabled then return end
 local function Compare(a, b)
     if a == b then return true end

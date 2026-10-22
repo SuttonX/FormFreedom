@@ -1,12 +1,12 @@
-![FormFreedom — Automatic Druid Form Cancellation for WotLK 3.3.5a](assets/banner.png)
+![FormFreedom — Automatic Dismount and Form Cancellation for WotLK 3.3.5a](assets/banner.png)
 
 # FormFreedom
 
-**Automatic druid form cancellation for the WotLK 3.3.5 / 3.3.5a client.**
+**Automatic dismounting for all classes, plus druid and shaman Ghost Wolf form cancellation, for the WotLK 3.3.5 / 3.3.5a client.**
 
-**Druid only** · **Standalone** · **ElvUI compatible**
+**All classes** · **Standalone** · **ElvUI compatible**
 
-Trying to take a flight, craft an item or summon a mount while shapeshifted? FormFreedom leaves form through your original click and continues supported actions—without making you write macros or manually cancel form first.
+Trying to take a flight, craft an item or use a restricted ability while mounted or shapeshifted? FormFreedom dismounts or leaves a supported form through your original click and continues supported actions—without making you write macros or manually cancel first.
 
 Works with Blizzard's UI, ElvUI-WotLK, and [ConsolePortLK Enhanced](https://github.com/SuttonX/ConsolePortLK-Enhanced). No ElvUI file edits, settings panel or extra controls.
 
@@ -14,12 +14,12 @@ Works with Blizzard's UI, ElvUI-WotLK, and [ConsolePortLK Enhanced](https://gith
 
 | Action | How FormFreedom helps |
 | --- | --- |
-| **Flight masters** | Click to speak to Flight master: leaves form, then you select the flight. |
-| **Crafting** | Click **Create** or **Create All**: leave form and run the normal profession-button action, preserving the selected recipe and quantity. |
+| **Flight masters** | Dismounts on the ground when the flight map opens; retains tested form support and secure helpers for reachable destination clicks. |
+| **Crafting** | Click **Create** or **Create All**: dismount on the ground or leave form and run the normal profession-button action, preserving the selected recipe and quantity. |
 | **Mounts** | Leaves a disallowed form before summoning. |
-| **Fishing** | Use the Fishing ability: leave a disallowed form before casting. |
-| **Teleports** | Use an identified restricted teleport spell or item: leave form when its spell rules require it. |
-| **Warstorm Book of Powers** | Item **9017**: mount option **2** and Dalaran option **9** leave form upon selection. Opening the book and other options retain their normal behavior. |
+| **Fishing** | Use Fishing on a supported action bar: dismount on the ground or leave a disallowed form before casting. |
+| **Restricted spells and items** | Use a known spell or resolvable item spell on a supported action bar: dismount on the ground or leave form according to its spell rules. Includes restricted teleports, profession abilities, bandages and other known item spells. |
+| **Warstorm Book of Powers** | Item **9017**: mount option **2** and Dalaran option **9** dismount on the ground or leave form upon selection. Opening the book is excluded from proactive action-bar cancellation.  Client/server behavior or a mounted-error fallback can still cause earlier dismounting; on the tested Warstorm setup, the maintainer observed form/mount removal when opening the book. |
 
 ## How it works
 
@@ -28,6 +28,16 @@ Works with Blizzard's UI, ElvUI-WotLK, and [ConsolePortLK Enhanced](https://gith
 The client's built-in `autoUnshift` behavior already handles some actions. On the tested Warstorm setup, for example, the normal Hearthstone already leaves form without an addon workaround.
 
 **FormFreedom does not enable, disable or change the `autoUnshift` setting.** It adds explicit cancellation to supported clicks that need it, using a secure `/cancelform [form]` action before continuing the original action.
+
+### Mounted actions
+
+Most ordinary spell casts already dismount through the client.  FormFreedom adds a secure grounded `/dismount [mounted,noflying]` fallback for supported action-bar spells/items whose stock mounted-use rules prohibit casting while mounted, and for supported crafting, flight-destination and Book of Powers clicks.  The action-bar fallback runs only while still mounted and grounded at the click.
+
+A separate native fallback also dismounts on the ground when the flight map opens or the client emits a specific localized mounted-action error.  This can help direct gathering clicks and other paths that are not wrapped by the secure action-bar helpers.  It does not retry the failed action: click or cast again if needed.  This native fallback waits for the next eligible event if you are in combat, flying or on a taxi; it does not queue a deferred dismount.  It preserves the error display and never cancels shapeshift forms in the background.
+
+Action-bar classification leaves known spells allowed while mounted, passive spells, unknown custom actions and ambiguous item-spell matches native.  Unknown actions can still trigger the native fallback if the client explicitly reports a mounted-action error.  Tracking and mounted-combat abilities retain their mounted behavior.  Other classes keep their stances and transformations; only druids and shamans receive form cancellation.  Existing user macros are not rewritten.
+
+Flying mounts retain native behavior.  FormFreedom does not change `autoDismountFlying`, force an airborne dismount, or attempt to interrupt taxi flights.  Private-server/client behavior can differ from the bundled stock reference.
 
 ### Spell rules, not a blanket “leave form” command
 
@@ -39,18 +49,20 @@ Before redirecting a click, it checks that the bar slot still contains the class
 
 ### One hardware click
 
-WoW protects form cancellation. FormFreedom runs it through a secure button during your click—not through a background error listener that retries arbitrary actions.
+WoW protects form cancellation. FormFreedom runs it through a secure button during your click.  The separate native mounted-error fallback only dismounts; neither mechanism retries arbitrary actions in the background.
 
 For native menus, invisible secure helpers cover only the supported buttons. They preserve the original menu's appearance and hover behavior, cancel form, then continue the selected action. No macros need to be placed on your bars.
 
 ## Compatibility
 
-- **WotLK 3.3.5a**, Interface **30300**; druids only. Compatibility with **3.3.5** is expected but has not been separately tested.
+Shamans can use the same supported action-bar and menu helpers while in **Ghost Wolf**.  The bundled spell rules determine which actions require leaving the form; casting Ghost Wolf itself is not intercepted.  Other classes use the mounted-action helpers without cancelling their stances or transformations.  See [TESTING.md](TESTING.md) for validation status and test history.
+
+- **WotLK 3.3.5a**, Interface **30300**; all classes for dismounting, druids and shamans for form cancellation. Compatibility with **3.3.5** is expected but has not been separately tested.
 - **Blizzard action bars**, including the bonus/form bar and four multibars.
 - **ElvUI-WotLK** action bars. ElvUI is optional; its files remain untouched.
 - **ConsolePortLK**. Both CPLK controller cursor and virtual mouse cursor retain intended addon functionality.
 
-Successfully tested **entirely standalone**, **alongside ElvUI 3.3.5**, and **alongside ConsolePortLK** on **Warstorm**, using the **WotLK 3.3.5a client**. Other private servers, bar replacements and controller combinations are not exhaustively tested. FormFreedom targets the original WotLK client, rather than retail WoW or modern Classic clients.  See [TESTING.md](TESTING.md) for validation history and remaining limits.
+The previous druid form-handling builds were successfully tested **entirely standalone**, **alongside ElvUI 3.3.5**, and **alongside ConsolePortLK** on **Warstorm**, using the **WotLK 3.3.5a client**. Other private servers, bar replacements and controller combinations are not exhaustively tested. FormFreedom targets the original WotLK client, rather than retail WoW or modern Classic clients.  See [TESTING.md](TESTING.md) for validation history and remaining limits.
 
 ## Related addons
 
@@ -78,17 +90,17 @@ Fully close WoW, download the latest install ZIP, and replace the **FormFreedom*
 
 ## Coverage limits
 
-- Mining by right-clicking ore, arbitrary quest/gossip options, toys and bandages are not universally handled.
+- Direct world clicks such as right-clicking ore or herbs, arbitrary quest/gossip options, and every bag/spellbook path are not guaranteed one-click handling.  The native fallback can dismount after a recognized mounted error, but you may need to click again.  Known bandage and other item spells can use the supported action-bar path; this does not guarantee every item or toy.
 - Book of Powers support uses Warstorm's specific item and option indices.
 - Private-server restrictions can differ from the bundled stock reference. Unknown custom actions may need dedicated support.
 - Menu helpers hide securely in combat; native menu behavior remains. Action-bar classification updates wait until combat ends, while existing entries still require a matching current action.
 - Existing user macros are not rewritten. Encounter transformations cannot generally be removed by ordinary `/cancelform`.
 
-FormFreedom handles supported click paths; it does not promise to intercept every “You are in shapeshift form” error in the game.
+FormFreedom handles supported click paths; it does not promise to intercept every “You are in shapeshift form” or “You are mounted” error in the game.
 
 ## Found another blocked action?
 
-If an action still displays **“You are in shapeshift form”** and your druid does not leave form, please open an issue so we can investigate adding support. Tell us what you clicked, your form and server, and include the **item number or spell ID** if possible.
+If an action still displays **“You are in shapeshift form”** or **“You are mounted”** and your character does not leave the blocking state, please open an issue so we can investigate adding support. Tell us what you clicked, your form and server, and include the **item number or spell ID** if possible.
 
 With FormFreedom enabled, create this short capture macro:
 
@@ -100,7 +112,7 @@ With FormFreedom enabled, create this short capture macro:
 
 After installing or updating FormFreedom, **restart WoW** so its report module loads. Keep your existing SavedVariables.
 
-1. On your druid, enter **Cat, Bear or another shapeshift form**.
+1. On your druid, enter **Cat, Bear or another shapeshift form**, or enter **Ghost Wolf** on your shaman.  To investigate dismounting on any class, use a ground mount instead.
 2. Type `/ffreport` in chat, or press the capture macro. You should see a message saying it is recording for **30 seconds**.
 3. Within those 30 seconds, click a spell on your action bar, an item in your bag or a Book of Powers option.
 4. Type `/ffreport` again, or press the macro again, to open the report immediately. Otherwise it opens when the recording timer expires.

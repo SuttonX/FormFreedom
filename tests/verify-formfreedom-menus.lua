@@ -1,3 +1,7 @@
+local mounted,flying,taxi=false,false,false
+IsMounted=function() return mounted end
+IsFlying=function() return flying end
+UnitOnTaxi=function() return taxi end
 local hooks, frames = {}, {}
 local combat, form, now, npc = false, 1, 10, false
 local function frame(name)
@@ -57,11 +61,11 @@ local ab={enabled=true,bar={ReconcileFormMenuState=function() reconciles=reconci
 local function tick() ab.formMenuMonitor.scripts.OnUpdate(ab.formMenuMonitor,.2) end
 tick();assert(not GossipTitleButton2.ffAutoFormClick)
 hooks.UseContainerItem(0,1);hooks.GossipFrameUpdate()
-assert(GossipTitleButton2.ffAutoFormClick.attrs.macrotext=='/cancelform [form]\n/run SelectGossipOption(2)')
+assert(GossipTitleButton2.ffAutoFormClick.attrs.macrotext=='/dismount [mounted,noflying]\n/cancelform [form]\n/run SelectGossipOption(2)')
 assert(GossipTitleButton9.ffAutoFormClick);assert(not GossipTitleButton3.ffAutoFormClick)
 local held=GossipTitleButton2.ffAutoFormClick;local hides,shows=held.hides,held.shows;tick();tick();assert(held.hides==hides and held.shows==shows and held.source==GossipTitleButton2)
 held.scripts.OnEnter(held);assert(GossipTitleButton2.highlight);held.scripts.OnLeave(held);assert(not GossipTitleButton2.highlight);held.scripts.OnEnter(held);form=0;tick();assert(not GossipTitleButton2.highlight);form=1;tick()
-local craft=TradeSkillCreateButton.ffAutoFormClick;assert(craft and craft.attrs.macrotext=='/cancelform [form]\n')
+local craft=TradeSkillCreateButton.ffAutoFormClick;assert(craft and craft.attrs.macrotext=='/dismount [mounted,noflying]\n/cancelform [form]\n')
 craft.scripts.PreClick(craft,'LeftButton'); form=0; tick(); assert(not craft.source); craft.scripts.PostClick(craft,'LeftButton');assert(crafted==1);form=1;tick()
 now=now+1;tick();assert(reconciles==1);tick();assert(reconciles==1)
 TradeSkillCreateButton.enabled=false;tick();assert(not TradeSkillCreateButton.ffAutoFormClick)
@@ -77,3 +81,18 @@ TradeSkillCreateButton=frame();tick()
 assert(previous.ffAutoFormClick==nil,'Reusing an overlay must clear the old source redirect')
 assert(TradeSkillCreateButton.ffAutoFormClick.source==TradeSkillCreateButton)
 print('PASS: replaced menu source clears stale controller redirect')
+
+-- All-class mounted helpers work without form cancellation or airborne dismount.
+ab.formEnabled=false;form=0;mounted=true;tick()
+local mountedCraft=TradeSkillCreateButton.ffAutoFormClick
+assert(mountedCraft and mountedCraft.attrs.macrotext=='/dismount [mounted,noflying]\n')
+assert(TaxiButton2.ffAutoFormClick and not TaxiButton1.ffAutoFormClick)
+assert(not TaxiButton2.ffAutoFormClick.attrs.macrotext:find('/cancelform',1,true))
+hooks.UseItemByName(9017);hooks.GossipFrameUpdate()
+assert(GossipTitleButton2.ffAutoFormClick and GossipTitleButton9.ffAutoFormClick)
+assert(GossipTitleButton2.ffAutoFormClick.attrs.macrotext=='/dismount [mounted,noflying]\n/run SelectGossipOption(2)')
+flying=true;tick();assert(not TradeSkillCreateButton.ffAutoFormClick and not TaxiButton2.ffAutoFormClick)
+flying=false;taxi=true;tick();assert(not TaxiButton2.ffAutoFormClick)
+taxi=false;tick();assert(TaxiButton2.ffAutoFormClick)
+mounted=false;form=1;tick();assert(not TaxiButton2.ffAutoFormClick, 'Other classes must retain stances')
+print('PASS: mounted all-class crafting/taxi helpers, no other-class form cancellation, flying/taxi exclusions')

@@ -90,7 +90,9 @@ local function Place(key, source, macro, craftClick)
     button.craftClick = craftClick
     source.ffAutoFormClick = button
     button.generation = refreshGeneration
-    local text = '/cancelform [form]\n'..macro
+    local text = '/dismount [mounted,noflying]\n'
+    if ab.formEnabled ~= false then text = text..'/cancelform [form]\n' end
+    text = text..macro
     if button:GetAttribute('macrotext') ~= text then button:SetAttribute('macrotext', text) end
     local x, y = left * ratio, bottom * ratio
     local width, height = source:GetWidth() * ratio, source:GetHeight() * ratio
@@ -110,7 +112,9 @@ end
 local function Refresh()
     if InCombatLockdown() then return end
     refreshGeneration = refreshGeneration + 1
-    if GetShapeshiftForm() == 0 then
+    local shifted = ab.formEnabled ~= false and GetShapeshiftForm() > 0
+    local mounted = IsMounted() and not IsFlying() and not (UnitOnTaxi and UnitOnTaxi('player'))
+    if not shifted and not mounted then
         for _, button in pairs(overlays) do HideOverlay(button) end
         return
     end

@@ -23,7 +23,10 @@ local before = [[
         slot = self:GetID() + ((page - 1) * 12)
     end
     local form = GetShapeshiftForm()
-    if type(slot) ~= 'number' or slot < 1 or form == 0 or not manager:GetAttribute('FFAutoForm-'..slot..'-'..form) then return end
+    if type(slot) ~= 'number' or slot < 1 then return end
+    local leaveForm = form > 0 and manager:GetAttribute('FFAutoForm-'..slot..'-'..form)
+    local dismount = IsMounted() and not IsFlying() and not manager:GetAttribute('FFOnTaxi') and manager:GetAttribute('FFDismount-'..slot)
+    if not leaveForm and not dismount then return end
     local kind, id, subtype, spellID = GetActionInfo(slot)
     if kind ~= manager:GetAttribute('FFAutoFormKind-'..slot)
     or id ~= manager:GetAttribute('FFAutoFormID-'..slot)
@@ -43,7 +46,10 @@ local before = [[
     self:SetAttribute('FFOldText', self:GetAttribute('macrotext'))
     self:SetAttribute('macro', nil)
     self:SetAttribute('type', 'macro')
-    self:SetAttribute('macrotext', '/cancelform [form]\n/click FormFreedomActionProxy LeftButton')
+    local text = ''
+    if dismount then text = '/dismount [mounted,noflying]\n' end
+    if leaveForm then text = text..'/cancelform [form]\n' end
+    self:SetAttribute('macrotext', text..'/click FormFreedomActionProxy LeftButton')
 ]]
 local after = [[
     if not self:GetAttribute('FFActive') then return end

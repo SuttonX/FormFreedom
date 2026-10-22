@@ -1,13 +1,15 @@
 ## Interface: 30300
 ## Title: FormFreedom
-## Notes: Leave druid form when using supported travel, crafting and action-bar abilities.
+## Notes: Dismount for supported actions on all classes; leave druid forms or shaman Ghost Wolf when needed.
 ## Author: Christopher Sutton
-## Version: 1.0.3
+## Version: 1.1.0
 ## OptionalDeps: ElvUI, ConsolePortBar
 
 Core.lua
 FormRestrictions.lua
+MountRestrictions.lua
 AutoForm.lua
 ActionBars.lua
+Dismount.lua
 Menus.lua
 Diagnostics.lua

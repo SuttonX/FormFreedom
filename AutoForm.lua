@@ -6,6 +6,7 @@ local db = ab.data
 local band = bit.band
 local forms = ab.cancellableForms
 local restrictions = ab.formRestrictions
+local mountRestrictions = ab.mountRestrictions or {}
 -- Spell masks use server form IDs; macro [form] uses the player's form-bar
 -- index. Resolve names through this client's GetSpellInfo to support locales.
 local stanceForms = {[2]=true, [28]=true, [31]=true}
@@ -49,7 +50,9 @@ local function BuildNames()
         local id = ids[i]
         local name, rank = GetSpellInfo(id)
         if name then
-            local record = restrictions[id]
+            -- Include both rules so same-name item spells with different
+            -- mounted behavior are rejected as ambiguous too.
+            local record = {form = restrictions[id], mounted = mountRestrictions[id]}
             AddName(nameRecords, name, record)
             AddName(rankRecords, NameKey(name, rank), record)
         end
@@ -66,12 +69,13 @@ local function Refresh()
     for _, key in ipairs(oldKeys) do Bar:SetAttribute(key, nil) end
     wipe(oldKeys)
     Bar:SetAttribute('FFAutoFormCursorBusy', GetCursorInfo() and true or false)
+    Bar:SetAttribute('FFOnTaxi', UnitOnTaxi and UnitOnTaxi('player') and true or false)
     local function Put(key, value)
         Bar:SetAttribute(key, value)
         oldKeys[#oldKeys+1] = key
     end
     local slots = {}
-    for index = 1, GetNumShapeshiftForms() do
+    for index = 1, (ab.formEnabled ~= false and GetNumShapeshiftForms() or 0) do
         local _, formName = GetShapeshiftFormInfo(index)
         for formID, spellID in pairs(forms) do
             if formName == GetSpellInfo(spellID) then
@@ -104,33 +108,41 @@ local function Refresh()
             local _, _, mountSpellID = GetCompanionInfo('MOUNT', id)
             spellID = mountSpellID
         end
-        local record = (spellID and restrictions[spellID]) or itemRecord
+        local record = (spellID and restrictions[spellID]) or (itemRecord and itemRecord.form)
+        local mountRule
+        if spellID then mountRule = mountRestrictions[spellID]
+        elseif itemRecord then mountRule = itemRecord.mounted end
         if kind == 'companion' and subtype == 'MOUNT' and not record then
             -- The mount journal identifies new/custom mounts even if their
             -- spell is not in our stock-data manifest.
             record = {false, 0, 0, false, true}
         end
+        local useful
         if record then
-            local useful
             for index, formID in pairs(slots) do
                 if ab:FormActionRequiresExit(record, formID) then
                     Put('FFAutoForm-'..slot..'-'..index, true)
                     useful = true
                 end
             end
-            if useful then
-                Put('FFAutoFormKind-'..slot, kind)
-                Put('FFAutoFormID-'..slot, id)
-                Put('FFAutoFormSubtype-'..slot, subtype)
-                Put('FFAutoFormSpellID-'..slot, actionSpellID)
-            end
+        end
+        if mountRule == true then
+            Put('FFDismount-'..slot, true)
+            useful = true
+        end
+        if useful then
+            Put('FFAutoFormKind-'..slot, kind)
+            Put('FFAutoFormID-'..slot, id)
+            Put('FFAutoFormSubtype-'..slot, subtype)
+            Put('FFAutoFormSpellID-'..slot, actionSpellID)
         end
     end
     pending = missingItems
 end
 monitor:SetScript('OnEvent', function(self, event)
     pending = true
-    if event == 'PLAYER_REGEN_ENABLED' or event == 'PLAYER_ENTERING_WORLD' or event == 'CURSOR_UPDATE' then Refresh() end
+    if event == 'PLAYER_REGEN_ENABLED' or event == 'PLAYER_ENTERING_WORLD' or event == 'CURSOR_UPDATE'
+    or event == 'PLAYER_CONTROL_LOST' or event == 'PLAYER_CONTROL_GAINED' then Refresh() end
 end)
 -- Coalesce action/item/form changes and only write secure attributes out of combat.
 monitor:SetScript('OnUpdate', function(self, elapsed)
@@ -143,6 +155,6 @@ monitor:SetScript('OnUpdate', function(self, elapsed)
 end)
 for _, event in ipairs({'PLAYER_ENTERING_WORLD', 'PLAYER_REGEN_ENABLED',
     'ACTIONBAR_SLOT_CHANGED', 'SPELLS_CHANGED', 'UPDATE_SHAPESHIFT_FORMS',
-    'COMPANION_UPDATE', 'BAG_UPDATE', 'CURSOR_UPDATE'}) do
+    'COMPANION_UPDATE', 'BAG_UPDATE', 'CURSOR_UPDATE', 'PLAYER_CONTROL_LOST', 'PLAYER_CONTROL_GAINED'}) do
     monitor:RegisterEvent(event)
 end

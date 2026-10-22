@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.1.0 — 2026-10-22
+
+- Enable FormFreedom initialization and diagnostics for shamans as well as druids.
+- Use the existing Ghost Wolf form mapping (form 16, spell 2645) with the shared action-bar classifier and menu helpers.
+- Add class-gating and localized Ghost Wolf regression coverage; preserve native Ghost Wolf casting and unknown actions.
+- Enable mounted-action helpers and reports for all classes while limiting form cancellation to druids/shamans.
+- Add grounded secure dismounts for known restricted action-bar spells/items and supported crafting, taxi destination and Book of Powers clicks. Preserve mounted-use spells, flying mounts, other classes' stances, unknown actions and native macros.
+- Derive mounted-use facts from the pinned stock build-12340 Spell.dbc and extend item-name ambiguity checks to include mounted behavior.
+- Add a grounded native fallback for localized mounted errors and flight-map opening, inspired by the user-supplied Dismounter reference and adapted to original 3.3.5 event arguments. No error clearing, background form cancellation, automatic action retries, airborne dismounts or combat-time native fallback.
+- Add mount/flying/taxi report context and mounted regression tests. Flight-master Ghost Wolf/mount handling and Book of Powers Dalaran use have in-game confirmation; remaining new paths have mock coverage.
+
 ## 1.0.3 — 2026-10-13
 
 - Give the diagnostic scroll frame a stable name required by the WotLK UIPanelScrollFrameTemplate, fixing the Lua error when opening /ffreport.

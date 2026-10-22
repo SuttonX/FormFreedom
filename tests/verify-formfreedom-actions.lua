@@ -1,3 +1,5 @@
+IsMounted=function() return false end
+IsFlying=function() return false end
 local combat=false
 InCombatLockdown=function() return combat end
 local function frame()

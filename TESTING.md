@@ -1,5 +1,23 @@
 # Validation and coverage
 
+## 1.1.0 confirmed in-game results
+
+On 2026-10-22 the maintainer confirmed leaving Ghost Wolf when speaking to a flight master and dismounting when mounted. Book of Powers Dalaran use also succeeded from Ghost Wolf and while mounted. The maintainer then clarified that opening Book of Powers itself removed the mount/form, including druid forms and Ghost Wolf, before selecting a destination. The source excludes item 9017 from proactive action-bar classification and targets only menu options 2/9; the new native error fallback does not cancel forms. The cause of opening-time cancellation was not isolated with FormFreedom disabled. The maintainer accepted that observed behavior and requested publication without further investigation.
+
+The maintainer declined repeated testing of previously confirmed druid behavior. Existing druid results remain historical passes; they are not claimed as a new 1.1.0 runtime regression matrix. Mounted spell/item use, crafting, gathering-error fallback, mounted combat/tracking and other class/input combinations were not separately confirmed in game for this release. All eight mock suites pass.
+
+## 1.1.0 mounted-action support
+
+All eight mock suites pass. Mounted tests cover stock mounted-use flags, allowed tracking and mounted combat, numeric/localized item-spell resolution and ambiguity, unknown actions, secure grounded dismounts, humanoid/stance preservation, stale identities, right clicks, combat deferral and taxi/flying exclusions. Menu tests cover mounted all-class crafting and reachable taxi destinations without cancelling non-druid/shaman stances. Native fallback tests exercise localized mounted errors with the original 3.3.5 first-argument payload, flight-map opening, unrelated/nil/modern payloads, ground/taxi/combat exclusions, re-entrant events and a modified-client failure disabling native fallback after one attempt. Diagnostics now include mount/flying/taxi context and any native fallback error. These are mocks rather than proof of protected in-game execution.
+
+Test grounded mounted spell and item actions on a non-druid/shaman; check mounted tracking/jousting remains native. Test Create/Create All, a reachable taxi route and Book options 2/9. Check Ghost Wolf and druid Prowl/Growl, ElvUI/CPLK input, normal unmounted behavior, /ffreport and combat deferral. Flying-mount and taxi behavior should remain native. Test a mounted ore/herb interaction or another path that returns a localized mounted error; the fallback should dismount outside combat, with another click needed if the original action failed. World-object gathering and arbitrary gossip remain outside guaranteed one-click coverage.
+
+## Shaman Ghost Wolf support
+
+The Shaman test checks initialization on all playable classes, limits form handling to druids and shamans, resolves localized Ghost Wolf to bundled form 16, and classifies restricted spells, mounts and Fishing without intercepting Ghost Wolf or unknown actions. It also executes the shared ElvUI secure wrapper against the resulting Ghost Wolf attributes and verifies humanoid behavior stays native. Existing druid/action/menu/diagnostic suites remain required.
+
+On a shaman, verify error-free login, entering and manually leaving Ghost Wolf, a restricted spell and mount/Fishing on the action bar, crafting Create/Create All, flight-master and Warstorm Book of Powers options 2/9 if available, combat behavior, and /ffreport capture. Test ElvUI and ConsolePortLK-Enhanced where used. Recheck druid Prowl and Growl. The confirmed-results section above records the Shaman runtime evidence; mock tests do not add runtime confirmations.
+
 ## 1.0.3 report window
 
 On 2026-10-13 the maintainer confirmed the diagnostic report-window fix working in game using 1.0.3-test1 after being asked to check error-free opening, scrolling and copying. Release 1.0.3 retains that tested window change and the 1.0.2 Prowl fix. All five mock suites pass, with the diagnostic mock rejecting unnamed UIPanelScrollFrameTemplate frames.

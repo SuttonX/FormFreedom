@@ -29,7 +29,11 @@ local function ShowReport()
     local version = GetAddOnMetadata and GetAddOnMetadata(addonName,'Version') or '1.0.1'
     local text = 'FormFreedom report\nAddon: '..tostring(version)..'; target: WotLK 3.3.5a\nClient: '..tostring(GetBuildInfo())
         ..'\nRealm: '..tostring(GetRealmName())..'\nStarted in: '..capture.form
-        ..'\nEnded in: '..FormName()..'\nElvUI loaded: '..tostring(IsAddOnLoaded('ElvUI'))
+        ..'\nEnded in: '..FormName()
+        ..'\nStarted mounted: '..tostring(capture.mounted)..'; ended mounted: '..tostring(IsMounted and IsMounted() or false)
+        ..'\nFlying: '..tostring(IsFlying and IsFlying() or false)..'; on taxi: '..tostring(UnitOnTaxi and UnitOnTaxi('player') or false)
+        ..'\nDismount fallback error: '..tostring(ns.dismountFallbackError or 'none')
+        ..'\nElvUI loaded: '..tostring(IsAddOnLoaded('ElvUI'))
         ..'\nConsolePortBar loaded: '..tostring(IsAddOnLoaded('ConsolePortBar'))..'\n\n'
         ..(#capture.lines > 0 and table.concat(capture.lines, '\n') or 'No supported action hooks captured. Describe the exact action/menu manually.')
         ..'\n\nPlease add server name, expected behavior and steps to reproduce. IDs may be unavailable for custom server actions.'
@@ -123,8 +127,8 @@ end)
 SLASH_FORMFREEDOMREPORT1 = '/ffreport'
 SlashCmdList.FORMFREEDOMREPORT = function()
     if capture then ShowReport(); return end
-    capture = {form = FormName(), lines = {}, expires = GetTime() + 30}
+    capture = {form = FormName(), mounted = IsMounted and IsMounted() or false, lines = {}, expires = GetTime() + 30}
     showAt = nil
-    print('|cff7fe6baFormFreedom:|r recording for 30 seconds. Click the failing action while shifted. Run /ffreport again to show the report early.')
+    print('|cff7fe6baFormFreedom:|r recording for 30 seconds. Click the failing action while mounted or shifted. Run /ffreport again to show the report early.')
 end
 ns.diagnosticMonitor = monitor
