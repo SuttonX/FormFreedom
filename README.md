@@ -2,7 +2,7 @@
 
 # FormFreedom
 
-**Automatic dismounting for all classes, plus druid and shaman Ghost Wolf form cancellation, for the WotLK 3.3.5 / 3.3.5a client.**
+**Automatic dismounting for all classes, plus druid and shaman form cancellation, for the WotLK 3.3.5 / 3.3.5a client.**
 
 **All classes** · **Standalone** · **ElvUI compatible**
 
