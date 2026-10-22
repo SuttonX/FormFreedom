@@ -1,4 +1,4 @@
-![FormFreedom — Automatic Dismount and Form Cancellation for WotLK 3.3.5a](assets/banner.png)
+![FormFreedom — Automatic Dismount and Form Cancellation for WotLK 3.3.5a](assets/FormFreedom-all-classes.png)
 
 # FormFreedom
 
