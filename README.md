@@ -1,4 +1,4 @@
-![FormFreedom — Automatic Dismount and Form Cancellation for WotLK 3.3.5a](assets/FormFreedom-all-classes.png)
+![FormFreedom: Automatic Dismount and Form Cancellation for WotLK 3.3.5a](assets/FormFreedom-all-classes.png)
 
 # FormFreedom
 
@@ -74,12 +74,15 @@ Druid form handling has been confirmed **entirely standalone**, **alongside ElvU
 
 Other new mounted interactions, private servers, bar replacements and controller combinations are not exhaustively tested.  FormFreedom targets the original WotLK client, rather than retail WoW or modern Classic clients.  See [TESTING.md](TESTING.md) for the confirmed results, automated checks and remaining limits.
 
-## Related addons
+## Other addons by SuttonX
 
 - [ConsolePortLK-Enhanced](https://github.com/SuttonX/ConsolePortLK-Enhanced): controller support for WotLK 3.3.5a, with improved action-bar layouts, cooldown displays, and saved layout preferences.  FormFreedom integrates with its controller cursor for supported menu actions and helps reconcile the displayed modifier bar afterward.
 - [SetupSwap](https://github.com/SuttonX/SetupSwap): save account-wide desktop and controller setups, each with their own addon selections, captured settings and window positions, chat layouts, and native WoW keybindings.  Switch through a UI reload without logging out.  Keep FormFreedom enabled in both profiles to retain its supported form handling when toggling ConsolePortLK-Enhanced.
+- [SmartTravel](https://github.com/SuttonX/SmartTravel): One travel button for smart mounts, Druid forms, Ghost Wolf, and Hearthstone.
+- [Classfix](https://github.com/SuttonX/Classfix): Customize class colors across compatible UI frames and addons.
+- [Questie TomTom Helper](https://github.com/SuttonX/QuestieAutoTomTom): Automatic Questie objective and turn-in waypoints that respect your manual navigation choices.
 
-Both addons are separate, optional downloads.  [Download the latest ConsolePortLK-Enhanced.zip](https://github.com/SuttonX/ConsolePortLK-Enhanced/releases/latest/download/ConsolePortLK-Enhanced.zip) or [SetupSwap.zip](https://github.com/SuttonX/SetupSwap/releases/latest/download/SetupSwap.zip), and follow each project's installation instructions.
+These addons are separate, optional downloads.  [Download the latest ConsolePortLK-Enhanced.zip](https://github.com/SuttonX/ConsolePortLK-Enhanced/releases/latest/download/ConsolePortLK-Enhanced.zip) or [SetupSwap.zip](https://github.com/SuttonX/SetupSwap/releases/latest/download/SetupSwap.zip), and follow each project's installation instructions.
 
 ## Installation
 
