@@ -81,6 +81,7 @@ Other new mounted interactions, private servers, bar replacements and controller
 - [SmartTravel](https://github.com/SuttonX/SmartTravel): One travel button for smart mounts, Druid forms, Ghost Wolf, and Hearthstone.
 - [Classfix](https://github.com/SuttonX/Classfix): Customize class colors across compatible UI frames and addons.
 - [Questie TomTom Helper](https://github.com/SuttonX/QuestieAutoTomTom): Automatic Questie objective and turn-in waypoints that respect your manual navigation choices.
+- [Locksmith](https://github.com/SuttonX/Locksmith): Modifier-click lockbox unlocking and a compact key and Seaforium selection window for Rogues, Blacksmiths, and Engineers.
 
 These addons are separate, optional downloads.  [Download the latest ConsolePortLK-Enhanced.zip](https://github.com/SuttonX/ConsolePortLK-Enhanced/releases/latest/download/ConsolePortLK-Enhanced.zip) or [SetupSwap.zip](https://github.com/SuttonX/SetupSwap/releases/latest/download/SetupSwap.zip), and follow each project's installation instructions.
 
